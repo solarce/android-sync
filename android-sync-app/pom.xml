@@ -136,6 +136,7 @@
           </dex>
           <androidManifestFile>${project.basedir}/../AndroidManifest.xml</androidManifestFile>
           <resourceDirectory>${project.basedir}/../res</resourceDirectory>
+          <assetsDirectory>${project.basedir}/../assets</assetsDirectory>
         </configuration>
         <extensions>true</extensions>
       </plugin>
