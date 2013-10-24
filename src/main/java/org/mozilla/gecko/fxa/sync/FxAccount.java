@@ -66,7 +66,7 @@ public class FxAccount {
     }
 
     FxAccountClient fxAccountClient = new FxAccountClient(idpEndpoint, Executors.newSingleThreadExecutor());
-    fxAccountClient.sign(sessionTokenBytes, keyPairObject, 24*60*60, new FxAccountClient.RequestDelegate<String>() {
+    fxAccountClient.sign(sessionTokenBytes, keyPairObject, 24*60*60*1000, new FxAccountClient.RequestDelegate<String>() {
       @Override
       public void handleError(Exception e) {
         Logger.error(LOG_TAG, "Failed to sign.", e);
@@ -84,7 +84,15 @@ public class FxAccount {
       public void handleSuccess(String certificate) {
         Logger.info(LOG_TAG, "Got certificate " + certificate);
         try {
+//          ExtendedJSONObject o = JSONWebTokenUtils.extractPayload(certificate);
+//          System.out.println("payl: " + o.toJSONString());
+//          System.out.println("ciat: " + o.getLong("iat"));
+//          System.out.println("cexp: " + o.getLong("exp"));
+//          System.out.println(" now: " + System.currentTimeMillis());
+//
+//          long iat = Math.max(System.currentTimeMillis(), o.getLong("iat")) + 1;
           String assertion = JSONWebTokenUtils.createAssertion(keyPair.getPrivate(), certificate, authEndpoint);
+              // JSONWebTokenUtils.DEFAULT_ASSERTION_ISSUER, iat, JSONWebTokenUtils.DEFAULT_ASSERTION_DURATION_IN_MILLISECONDS);
           Logger.info(LOG_TAG, "Generated assertion " + assertion);
 
           JSONWebTokenUtils.dumpAssertion(assertion);
